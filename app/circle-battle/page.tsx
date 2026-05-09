@@ -430,7 +430,7 @@ function TeacherBoard({
             </section>
 
             <aside className={styles.resultRail}>
-              <section className={styles.resultCard}>
+              <section className={`${styles.resultCard} ${styles.rankCard}`}>
                 <div className={styles.resultTitle}>
                   <Trophy size={22} />
                   <span>TOP 5</span>

@@ -483,23 +483,29 @@
 .resultRail {
   min-height: 0;
   display: grid;
-  grid-template-rows: minmax(0, 1.1fr) auto auto auto;
-  gap: 12px;
+  grid-template-rows: auto auto auto auto;
+  align-content: start;
+  gap: clamp(8px, 0.8vw, 12px);
+  overflow: hidden;
 }
 
 .resultCard,
 .teamAverages,
 .summaryCard {
   min-height: 0;
-  padding: 14px;
+  padding: clamp(10px, 0.9vw, 14px);
+}
+
+.rankCard {
+  align-self: start;
 }
 
 .resultTitle {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 12px;
-  font-size: clamp(17px, 1.2vw, 22px);
+  margin-bottom: clamp(7px, 0.7vw, 12px);
+  font-size: clamp(16px, 1.12vw, 22px);
   font-weight: 950;
 }
 
@@ -514,21 +520,22 @@
 .rankList {
   min-height: 0;
   display: grid;
-  gap: 9px;
+  gap: clamp(5px, 0.45vw, 8px);
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
 .rankList li {
+  min-height: clamp(42px, 4.8vh, 56px);
   display: grid;
-  grid-template-columns: 34px minmax(0, 1fr) auto;
+  grid-template-columns: clamp(28px, 2.4vw, 34px) minmax(0, 1fr) auto;
   grid-template-areas:
     "rank name score"
     "rank meta score";
   align-items: center;
-  column-gap: 8px;
-  padding: 9px;
+  column-gap: clamp(6px, 0.55vw, 8px);
+  padding: clamp(5px, 0.55vw, 8px);
   border: 2px solid rgba(21, 21, 21, 0.1);
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.7);
@@ -536,36 +543,39 @@
 
 .rankList li > span {
   grid-area: rank;
-  width: 28px;
-  height: 28px;
+  width: clamp(24px, 2vw, 28px);
+  height: clamp(24px, 2vw, 28px);
   display: grid;
   place-items: center;
   border: 2px solid var(--ink);
   border-radius: 50%;
   background: var(--team);
   color: #fff;
+  font-size: clamp(12px, 0.9vw, 16px);
   font-weight: 950;
 }
 
 .rankList strong {
   grid-area: name;
   overflow: hidden;
-  font-size: 16px;
+  font-size: clamp(13px, 0.98vw, 16px);
   text-overflow: ellipsis;
   white-space: nowrap;
+  line-height: 1.05;
 }
 
 .rankList em {
   grid-area: meta;
   color: rgba(21, 21, 21, 0.62);
-  font-size: 12px;
+  font-size: clamp(10px, 0.78vw, 12px);
   font-style: normal;
   font-weight: 850;
+  line-height: 1.05;
 }
 
 .rankList b {
   grid-area: score;
-  font-size: 22px;
+  font-size: clamp(17px, 1.35vw, 22px);
 }
 
 .hiddenRank {
@@ -580,7 +590,7 @@
 
 .teamAverages {
   display: grid;
-  gap: 10px;
+  gap: clamp(6px, 0.55vw, 10px);
 }
 
 .teamBar {
@@ -620,13 +630,13 @@
 .summaryCard {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  gap: clamp(7px, 0.65vw, 10px);
 }
 
 .summaryCard div {
   display: grid;
   gap: 3px;
-  padding: 10px;
+  padding: clamp(7px, 0.7vw, 10px);
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.68);
 }
