@@ -776,10 +776,17 @@ function CircleStage({
   submissions: CircleSubmission[];
 }) {
   const averageCircle = phase === 'revealed' ? getAverageCircle(submissions) : null;
+  const stageViewBox = getCircleStageViewBox(submissions, averageCircle);
 
   return (
     <div className={styles.circleStage}>
-      <svg aria-label="학생 원 제출 결과" className={styles.circleArena} role="img" viewBox="0 0 1000 1000">
+      <svg
+        aria-label="학생 원 제출 결과"
+        className={styles.circleArena}
+        preserveAspectRatio="xMidYMid meet"
+        role="img"
+        viewBox={stageViewBox}
+      >
         <defs>
           <filter id="circleGlow" x="-20%" y="-20%" width="140%" height="140%">
             <feGaussianBlur stdDeviation="7" />
@@ -811,6 +818,52 @@ function CircleStage({
       </div>
     </div>
   );
+}
+
+type CircleStageBounds = {
+  minX: number;
+  minY: number;
+  maxX: number;
+  maxY: number;
+};
+
+function getCircleStageViewBox(submissions: CircleSubmission[], averageCircle: CircleEstimate | null): string {
+  const bounds: CircleStageBounds = {
+    minX: 0,
+    minY: 0,
+    maxX: 1,
+    maxY: 1
+  };
+
+  includeCircleBounds(bounds, targetCircle.x, targetCircle.y, targetCircle.r);
+  if (averageCircle) {
+    includeCircleBounds(bounds, averageCircle.center.x, averageCircle.center.y, averageCircle.radius);
+  }
+
+  submissions.forEach((submission) => {
+    submission.path.forEach((point) => includePointBounds(bounds, point.x, point.y));
+  });
+
+  const padding = 0.075;
+  const centerX = (bounds.minX + bounds.maxX) / 2;
+  const centerY = (bounds.minY + bounds.maxY) / 2;
+  const size = Math.max(bounds.maxX - bounds.minX, bounds.maxY - bounds.minY, 1) + padding * 2;
+  const minX = centerX - size / 2;
+  const minY = centerY - size / 2;
+
+  return `${minX * 1000} ${minY * 1000} ${size * 1000} ${size * 1000}`;
+}
+
+function includePointBounds(bounds: CircleStageBounds, x: number, y: number) {
+  bounds.minX = Math.min(bounds.minX, x);
+  bounds.minY = Math.min(bounds.minY, y);
+  bounds.maxX = Math.max(bounds.maxX, x);
+  bounds.maxY = Math.max(bounds.maxY, y);
+}
+
+function includeCircleBounds(bounds: CircleStageBounds, x: number, y: number, radius: number) {
+  includePointBounds(bounds, x - radius, y - radius);
+  includePointBounds(bounds, x + radius, y + radius);
 }
 
 function SubmissionPath({
